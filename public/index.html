@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Wayou">
+        <meta name="description" content="hichat | a simple chat application built with node.js and websocket">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>hichat</title>
+        <link rel="stylesheet" href="./css/style.css">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+    </head>
+    <body>
+        <div id="loginWrapper">
+            <p id="info">connecting to server...</p>
+            <div id="nickWrapper">
+                <input type="text" placeHolder="nickname" id="nickname" />
+                <input type="text" placeHolder="password" id="password" />
+                <input type="button" value="OK" id="loginBtn" />
+            </div>
+        </div>
+    </body>
+    <script src="http://127.0.0.1:9090/socket.io/socket.io.js"></script>
+    <script>
+        var oBtn = document.getElementById('loginBtn'),
+            oNickName = document.getElementById('nickname'),
+            oPassword = document.getElementById('password')
+
+        var socket = io.connect();
+        oBtn.onclick = function(){
+            if(oNickName.value != ""){
+                socket.emit('login', {username: oNickName.value, password: oPassword.value});
+            }
+        }
+
+        socket.on('nickExisted', function(){
+            alert('该用户已经存在！');
+        })
+
+        socket.on('success', function(){
+            alert('用户创建成功！');
+        })
+
+    </script>
+</html>
